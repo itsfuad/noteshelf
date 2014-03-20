@@ -35,5 +35,12 @@
   el('remove').onclick = function () { if (!current) return; all = all.filter(function (n) { return n.id !== current; }); select(null); if (persist()) { render(); announce('Note deleted.'); } };
   el('notes').onclick = function (e) { if (e.target.getAttribute('data-id')) select(e.target.getAttribute('data-id')); };
   el('query').onkeyup = render;
+  el('export').onclick = function () {
+    var blob = new Blob([JSON.stringify(all, null, 2)], {type: 'application/json'});
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob); link.download = 'noteshelf-backup.json';
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    window.setTimeout(function () { URL.revokeObjectURL(link.href); }, 1000);
+  };
   load(); render();
 }());
