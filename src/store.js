@@ -7,7 +7,7 @@
   function normalize(note) {
     return {
       id: String(note.id), title: String(note.title || '').replace(/^\s+|\s+$/g, ''),
-      body: String(note.body || ''), tags: note.tags || [], updated: note.updated || ''
+      body: String(note.body || ''), tags: Object.prototype.toString.call(note.tags) === '[object Array]' ? note.tags : [], updated: note.updated || ''
     };
   }
   function search(notes, query) {
